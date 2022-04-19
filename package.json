@@ -10,7 +10,7 @@
     "data:import": "node backend/seeder",
     "data:destroy": "node backend/seeder -d"
   },
-  "author": "Busayo Obmbe",
+  "author": "Busayo Obembe",
   "license": "MIT",
   "dependencies": {
     "bcryptjs": "^2.4.3",
