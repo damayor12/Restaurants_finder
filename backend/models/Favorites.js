@@ -5,6 +5,8 @@ const favoriteSchema = mongoose.Schema(
   {
     userFrom: {
       type: Schema.Types.ObjectId,
+
+      
       ref: 'User',
     },
     restaurantId: {
