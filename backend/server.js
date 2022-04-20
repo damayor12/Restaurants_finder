@@ -16,7 +16,10 @@ app.use(morgan('tiny'));
 app.use(express.json());
 app.use(cors());
 
+
+
 app.use('/api/users', require('./routes/userRoutes'));
+app.use('/api/restaurants', require('./routes/restaurantRoutes'));
 
 // app.use
 app.get('/test', (req, res) => {
