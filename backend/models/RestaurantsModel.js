@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const geocoder = require('../config/geocoder');
 
 const ProductsSchema = new mongoose.Schema(
   {
@@ -19,6 +20,17 @@ const ProductsSchema = new mongoose.Schema(
     address: {
       type: String,
       required: [true, 'Please add your address'],
+    },
+    location: {
+      type: {
+        type: String,
+        enum: ['Point'],
+      },
+      coordinates: {
+        type: [Number],
+        index: '2dsphere',
+      },
+      country: { type: String },
     },
     isFood: {
       type: Boolean,
@@ -57,5 +69,15 @@ const ProductsSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+ProductsSchema.pre('save', async function (next) {
+  const location = await geocoder.geocode(this.address);
+  this.location = {
+    type: 'Point',
+    coordinates: [location[0].longitude, location[0].latitude],
+    country: loc[0].countryCode,
+  };
+  next();
+});
 
 module.exports = mongoose.model('Products', ProductsSchema);

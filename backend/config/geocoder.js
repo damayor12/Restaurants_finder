@@ -4,12 +4,10 @@ const options = {
   provider: 'mapquest',
 
   // Optional depending on the providers
-  fetch: customFetchImplementation,
-  apiKey: process.env, // for Mapquest, OpenCage, Google Premier
+  apiKey: process.env.GEOCODER_API_KEY, // for Mapquest, OpenCage, Google Premier
   formatter: null, // 'gpx', 'string', ...
 };
 
-
-module.exports =  NodeGeocoder(options);
+module.exports = NodeGeocoder(options);
 
 // Using callback
