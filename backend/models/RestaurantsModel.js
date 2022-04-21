@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 const geocoder = require('../config/geocoder');
 
-const ProductsSchema = new mongoose.Schema(
+const RestaurantsSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -9,7 +9,9 @@ const ProductsSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
+    },
+    rating: {
+      type: Number,
     },
     description: {
       type: String,
@@ -36,6 +38,9 @@ const ProductsSchema = new mongoose.Schema(
       type: Boolean,
     },
     totalReviews: {
+      type: Number,
+    },
+    minimumOrder: {
       type: Number,
     },
     writer: {
@@ -70,14 +75,15 @@ const ProductsSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-ProductsSchema.pre('save', async function (next) {
+RestaurantsSchema.pre('save', async function (next) {
   const location = await geocoder.geocode(this.address);
   this.location = {
     type: 'Point',
     coordinates: [location[0].longitude, location[0].latitude],
-    country: loc[0].countryCode,
+    country: location[0].countryCode,
+    city: location[0].city,
   };
   next();
 });
 
-module.exports = mongoose.model('Products', ProductsSchema);
+module.exports = mongoose.model('Restaurants', RestaurantsSchema);

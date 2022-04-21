@@ -4,7 +4,7 @@ const options = {
   provider: 'mapquest',
 
   // Optional depending on the providers
-  apiKey: process.env.GEOCODER_API_KEY, // for Mapquest, OpenCage, Google Premier
+  apiKey: 'x7Jvy0MyLKRGUTdyuJbjIWBFKbd6GphB', // for Mapquest, OpenCage, Google Premier
   formatter: null, // 'gpx', 'string', ...
 };
 
