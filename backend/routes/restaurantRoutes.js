@@ -1,9 +1,10 @@
 const router = require('express').Router();
 
-const {getRestaurants} = require('../controllers/restaurantControllers');
+const {getRestaurants, createRestaurant } = require('../controllers/restaurantControllers');
 
 
 //products
-router.get('/', getRestaurants);
+router.route('/').get(getRestaurants).post(createRestaurant);
+
 
 module.exports = router;

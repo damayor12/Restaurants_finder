@@ -5,8 +5,6 @@ const favoriteSchema = mongoose.Schema(
   {
     userFrom: {
       type: Schema.Types.ObjectId,
-
-      
       ref: 'User',
     },
     restaurantId: {
@@ -15,6 +13,7 @@ const favoriteSchema = mongoose.Schema(
     name: {
       type: String,
     },
+   
     image: {
       type: String,
       required: true,

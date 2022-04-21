@@ -23,6 +23,15 @@ const RestaurantsSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please add your address'],
     },
+    deliveryFee: {
+      type: Number,
+    },
+    closing_time: {
+      type: Date,
+    },
+    opening_time: {
+      type: Date,
+    },
     location: {
       type: {
         type: String,
@@ -34,11 +43,13 @@ const RestaurantsSchema = new mongoose.Schema(
       },
       country: { type: String },
     },
-    isFood: {
-      type: Boolean,
+    category: {
+      type: String,
+      enum: ['drinks', 'food', 'both'],
     },
     totalReviews: {
       type: Number,
+      default: 0,
     },
     minimumOrder: {
       type: Number,
