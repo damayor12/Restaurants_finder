@@ -1,5 +1,9 @@
 const mongoose = require('mongoose');
 
+// const likedSchema = new mongoose.Schema({
+//   restaurantIDs: { type: Array, default: [], ref: 'Restaurants' },
+// });
+
 const UserSchema = new mongoose.Schema(
   {
     name: {
@@ -20,9 +24,18 @@ const UserSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
-   
+    favorites: [
+      {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Restaurants',
+      },
+    ],
   },
   { timestamps: true },
 );
+
+UserSchema.virtual('favoriteCount').get(function () {
+  return this.favorites.length;
+});
 
 module.exports = mongoose.model('User', UserSchema);
