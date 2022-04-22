@@ -45,7 +45,6 @@ const addFavoriteController = async (req, res) => {
   const { _id, restaurandID } = req.body;
 
   try {
-    
     const docs = await User.findByIdAndUpdate(
       _id,
       { $addToSet: { favorites: restaurandID } },
@@ -60,24 +59,65 @@ const addFavoriteController = async (req, res) => {
       },
     );
 
-    const populatedDocs = await User.findByIdAndUpdate(_id).populate('favorites');
+    res.status(201).send({ ...docs, count: docs.favoriteCount });
+  } catch (error) {
+    res.status(500).send({ error, message: error.message || 'Error toggling button' });
+  }
+};
 
-    res.send(201).send({ ...populatedDocs, count: docs.favoriteCount });
+const deleteFavoriteController = async (req, res) => {
+  const restaurandID = req.params.id;
+  const { _id } = req.body;
 
+  try {
+    console.log('deleteeeeeeeee');
+    const docs = await User.findByIdAndUpdate(
+       _id ,
+      { $pull: { favorites: restaurandID } },
+      {
+        safe: true,
+        upsert: true,
+        
+
+        new: true,
+      },
+
+      function (err, doc) {
+        if (err) {
+          console.log(err);
+        } else {
+          return doc;
+        }
+      },
+    );
+
+    console.log('doc delete', docs);
+
+    // const populatedDocs = await User.findByIdAndUpdate(_id).populate('favorites');
+
+    res.status(201).send({ ...docs});
   } catch (error) {
     res.status(500).send({ error, message: error.message || 'Error toggling button' });
   }
 };
 
 const getFavoritesController = async (req, res) => {
-  const { _id} = req.body;
+  console.log('firessdqdqdqdqdqAAAAAAAAA');
+  const { _id } = req.body;
 
   try {
-   const populatedDocs = User.findByIdAndUpdate(_id).populate('favorites');
+    console.log('firessdqdqdqdqdqAAAAAAAAA');
+    let docs;
+    const populatedDocs = await User.findByIdAndUpdate(_id).populate('favorites').exec();
+    //  .exec((err, doc)=> {
+    //   //  console.log(doc)
+    //        if (err) return res.status(400).send(err);
+    //        res.status(200).json({ success: true, comments });
+    //  })
 
-    res.send(201).send({ ...populatedDocs, count: populatedDocs.favoriteCount });
-
+    res.status(201).send({ ...populatedDocs, favoriteCount: populatedDocs.favoriteCount });
   } catch (error) {
+    console.log('ERRORRRR');
     res.status(500).send({ error, message: error.message || 'Error fetching favorites' });
   }
 };
@@ -88,4 +128,5 @@ module.exports = {
   updateRestaurant,
   addFavoriteController,
   getFavoritesController,
+  deleteFavoriteController,
 };
