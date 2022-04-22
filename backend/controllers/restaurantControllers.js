@@ -15,6 +15,7 @@ const getRestaurants = asyncHandler(async (req, res) => {
 
 const createRestaurant = asyncHandler(async (req, res) => {
   // const { name, address, image, category, opening_time, closing_time, tags, csv } = await req.body;
+  console.log('controller',req.body)
   try {
     const restaurants = await Restaurant.create(req.body);
     res.status(201).send(restaurants);
