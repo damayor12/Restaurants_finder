@@ -34,7 +34,7 @@ const updateRestaurant = async (req, res) => {
       new: true,
     });
     console.log('updated', updatedRestaurant); 
-    console.log()
+    
     res.status(201).send(updatedRestaurant);
   } catch (error) {
     res.status(500).send({ error, message: error.message || 'Error updating restaurant' });
