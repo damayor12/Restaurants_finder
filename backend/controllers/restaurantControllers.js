@@ -29,12 +29,12 @@ const createRestaurant = async (req, res) => {
 
 const updateRestaurant = async (req, res) => {
   const userId = req.params.id;
-  console.log('body', req.body);
+  // console.log('body', req.body);
   try {
     const updatedRestaurant = await Restaurant.findByIdAndUpdate({ _id: userId }, req.body, {
       new: true,
     });
-    console.log('updated', updatedRestaurant);
+    // console.log('updated', updatedRestaurant);
 
     res.status(201).send(updatedRestaurant);
   } catch (error) {
@@ -64,7 +64,7 @@ const toggleFavorites = async (req, res) => {
     await Restaurant.findByIdAndUpdate({ _id: restaurantID }, { isFavorited: true });
 
     res.status(201).send({ count, added: true, restaurantID });
-    console.log('adding', true);
+   
   }
 };
 
@@ -75,7 +75,7 @@ const getFavorites = async (req, res) => {
    
     const docs = await Favorite.find({ userFrom: _id });
     const count = docs.length;
-     console.log('favoriteCount', favoriteCount, count);
+
     res.status(201).send({ docs, count });
     return;
   }
@@ -95,7 +95,7 @@ const deleteFavoriteController = async (req, res) => {
   const { _id } = req.body;
 
   try {
-    console.log('deleteeeeeeeee');
+    ('deleteeeeeeeee');
     const docs = await User.findByIdAndUpdate(
       _id,
       { $pull: { favorites: restaurandID } },
@@ -108,14 +108,14 @@ const deleteFavoriteController = async (req, res) => {
 
       function (err, doc) {
         if (err) {
-          console.log(err);
+          (err);
         } else {
           return doc;
         }
       },
     );
 
-    console.log('doc delete', docs);
+    ('doc delete', docs);
 
     // const populatedDocs = await User.findByIdAndUpdate(_id).populate('favorites');
 
@@ -126,7 +126,7 @@ const deleteFavoriteController = async (req, res) => {
 };
 
 const getFavoritesController = async (req, res) => {
-  console.log('firessdqdqdqdqdqAAAAAAAAA');
+  ('firessdqdqdqdqdqAAAAAAAAA');
   const { _id } = req.body;
 
   try {
