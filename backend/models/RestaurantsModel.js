@@ -63,6 +63,10 @@ const RestaurantsSchema = new mongoose.Schema(
       min: { type: Number },
       max: { type: Number },
     },
+    isFavorited: {
+      type: Boolean,
+      default: false
+    },
     tags: {
       type: [String],
     },

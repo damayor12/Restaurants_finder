@@ -1,6 +1,7 @@
 const asyncHandler = require('express-async-handler');
 const Restaurant = require('../models/RestaurantsModel');
 const User = require('../models/UsersModel');
+const Favorite = require('../models/FavoritesModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
@@ -41,28 +42,52 @@ const updateRestaurant = async (req, res) => {
   }
 };
 
-const addFavoriteController = async (req, res) => {
-  const { _id, restaurandID } = req.body;
+const toggleFavorites = async (req, res) => {
+  const { _id, restaurantID } = req.body;
 
-  try {
-    const docs = await User.findByIdAndUpdate(
-      _id,
-      { $addToSet: { favorites: restaurandID } },
-      { safe: true, upsert: true, new: true },
+  const favDocs = await Favorite.find({ userFrom: _id, restaurantID });
+  // console.log(favDocs)
 
-      function (err, doc) {
-        if (err) {
-          console.log(err);
-        } else {
-          return doc;
-        }
-      },
-    );
+  if (favDocs.length > 0) {
+    // console.log('YES')
+    //remove
+    await Restaurant.findByIdAndUpdate({ _id: restaurantID }, { isFavorited: false });
+    await Favorite.findOneAndDelete({ userFrom: _id, restaurantID }).remove();
 
-    res.status(201).send({ ...docs, count: docs.favoriteCount });
-  } catch (error) {
-    res.status(500).send({ error, message: error.message || 'Error toggling button' });
+    const count = await Favorite.count();
+    res.status(201).send({ count, added: false, restaurantID });
+    console.log('adding', false);
+  } else {
+    //  console.log('NO', req.body);
+    await Favorite.create({ userFrom: _id, restaurantID });
+    const count = await Favorite.count();
+    await Restaurant.findByIdAndUpdate({ _id: restaurantID }, { isFavorited: true });
+
+    res.status(201).send({ count, added: true, restaurantID });
+    console.log('adding', true);
   }
+};
+
+const getFavorites = async (req, res) => {
+  const { _id, favoriteCount } = req.body;
+  console.log('id', _id, 'fav', favoriteCount, 'body', req.body)
+  if (favoriteCount) {
+   
+    const docs = await Favorite.find({ userFrom: _id });
+    const count = docs.length;
+     console.log('favoriteCount', favoriteCount, count);
+    res.status(201).send({ docs, count });
+    return;
+  }
+
+  const docs = await Favorite.find({ userFrom: _id }).populate('restaurantID');
+  const count = docs.length;
+  // .exec(function (err, docs) {
+  //   res.send(docs);
+  // });
+  // const count = await Favorite.count();
+
+  res.status(201).send({ docs, count });
 };
 
 const deleteFavoriteController = async (req, res) => {
@@ -72,12 +97,11 @@ const deleteFavoriteController = async (req, res) => {
   try {
     console.log('deleteeeeeeeee');
     const docs = await User.findByIdAndUpdate(
-       _id ,
+      _id,
       { $pull: { favorites: restaurandID } },
       {
         safe: true,
         upsert: true,
-        
 
         new: true,
       },
@@ -95,7 +119,7 @@ const deleteFavoriteController = async (req, res) => {
 
     // const populatedDocs = await User.findByIdAndUpdate(_id).populate('favorites');
 
-    res.status(201).send({ ...docs});
+    res.status(201).send({ ...docs });
   } catch (error) {
     res.status(500).send({ error, message: error.message || 'Error toggling button' });
   }
@@ -126,7 +150,7 @@ module.exports = {
   getRestaurants,
   createRestaurant,
   updateRestaurant,
-  addFavoriteController,
-  getFavoritesController,
+  toggleFavorites,
+  getFavorites,
   deleteFavoriteController,
 };

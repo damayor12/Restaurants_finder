@@ -34,8 +34,5 @@ const UserSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
-UserSchema.virtual('favoriteCount').get(function () {
-  return this.favorites.length;
-});
 
 module.exports = mongoose.model('User', UserSchema);

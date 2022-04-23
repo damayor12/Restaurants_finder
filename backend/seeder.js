@@ -6,8 +6,10 @@ const restaurants = require('./data/restaurants');
 const products = require('./data/productsdata');
 const User = require('./models/usersModel');
 const Restaurants = require('./models/RestaurantsModel');
+const Favorites = require('./models/FavoritesModel');
 const Products = require('./models/ProductsModel');
 const connectDB = require('./config/config');
+// const { default: Favorites } = require('../client/src/pages/FavoritesPage');
 
 dotenv.config();
 
@@ -18,6 +20,7 @@ const importData = async () => {
     await Restaurants.deleteMany();
     await User.deleteMany();
     await Products.deleteMany();
+    await Favorites.deleteMany();
 
     const createdUsers = await User.insertMany(users);
 

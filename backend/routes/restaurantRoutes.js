@@ -4,17 +4,19 @@ const {
   getRestaurants,
   createRestaurant,
   updateRestaurant,
-  addFavoriteController,
-  getFavoritesController,
-  deleteFavoriteController
+  toggleFavorites,
+  getFavorites,
+  deleteFavoriteController,
 } = require('../controllers/restaurantControllers');
 
 //products
 router.route('/').get(getRestaurants).post(createRestaurant);
 router.put('/:id', updateRestaurant);
 
-router.route('/favorites').post(addFavoriteController);
-router.post('/favorites/all', getFavoritesController);
+//add
+router.route('/favorites').post(toggleFavorites);
+//get
+router.post('/favorites/all', getFavorites);
 router.delete('/favorites/:id', deleteFavoriteController);
 
 
