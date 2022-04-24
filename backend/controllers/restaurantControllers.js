@@ -4,25 +4,50 @@ const User = require('../models/UsersModel');
 const Favorite = require('../models/FavoritesModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const hoursToMinutesConverter = require('../utils/timeConverter');
 
 // GETS ALL RESTAURANTS
 const getRestaurants = async (req, res) => {
-  console.log('THE BODY', req.body.geo);
-  const { geoValue, lat, lng } = req.body;
+  // console.log('THE BODY', req.body);
+  // console.log('THE Time', );
+  const { geoValue, lat, lng, openNowCheckBox } = req.body;
   try {
-    if (lat) {
+    if (geoValue === '50' || geoValue === '100' || openNowCheckBox) {
       const geoParams = req.body;
       console.log('NO GET FIRED!!');
 
       const radius = Number(geoParams.geoValue) / 6378;
+      const timeNow = hoursToMinutesConverter();
 
-      const restaurants = await Restaurant.find({
-        location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
-      });
-      console.log('restaurants,', restaurants);
-      res.status(200).send(restaurants);
+      let flagged = false;
+      if (geoValue) {
+        if (openNowCheckBox) {
+          flagged = true;
+          const restaurants = await Restaurant.find({
+            location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
+            closing_time: { $gte: timeNow },
+          });
+
+          res.status(201).send(restaurants);
+        } else {
+          const restaurants = await Restaurant.find({
+            location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
+          });
+
+          res.status(201).send(restaurants);
+        }
+      } else if (openNowCheckBox) {
+        if (flagged) return;
+        else {
+          const restaurants = await Restaurant.find({
+            closing_time: { $gte: timeNow },
+          });
+
+          res.status(201).send(restaurants);
+        }
+      }
     } else {
-      console.log('YES');
+      console.log('YES DEFAULT');
       const restaurants = await Restaurant.find({});
 
       res.status(200).send(restaurants);
@@ -33,6 +58,7 @@ const getRestaurants = async (req, res) => {
 };
 
 const createRestaurant = async (req, res) => {
+  console.log('THE BODDY', req.body);
   try {
     const restaurants = await Restaurant.create(req.body);
     res.status(201).send(restaurants);

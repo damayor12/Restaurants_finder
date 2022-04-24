@@ -27,10 +27,10 @@ const RestaurantsSchema = new mongoose.Schema(
       type: Number,
     },
     closing_time: {
-      type: Date,
+      type: Number,
     },
     opening_time: {
-      type: Date,
+      type: Number,
     },
     location: {
       type: {
