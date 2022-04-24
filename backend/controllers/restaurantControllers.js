@@ -8,44 +8,83 @@ const hoursToMinutesConverter = require('../utils/timeConverter');
 
 // GETS ALL RESTAURANTS
 const getRestaurants = async (req, res) => {
-  // console.log('THE BODY', req.body);
+  const { geoValue, lat, lng, openNowCheckBox, rating } = req.body;
+  const timeNow = hoursToMinutesConverter();
+  const bodyObj = req.body;
+  const radius = Number(geoValue) / 6378;
+
+  console.log('TESTING', [[String(bodyObj['lng']), String(bodyObj['lat'])], String(radius)]);
+
+  console.log('THE BODY', req.body);
+
+  let SearchObj = {};
+  let GeoObj = {};
+  for (let i in bodyObj) {
+    if (bodyObj[i] !== 0 || bodyObj[i] !== '' || !bodyObj[i]) {
+      if (i === 'openNowCheckBox' && openNowCheckBox) {
+        SearchObj['closing_time'] = { $gte: timeNow };
+      } else if (i === 'rating') {
+        SearchObj['rating'] = { $lte: rating };
+      } else if (i === 'lat' || i === 'lng') {
+        GeoObj['location'] = {
+          $geoWithin: {
+            $centerSphere: [[bodyObj['lng'], bodyObj['lat']], String(radius)],
+          },
+        };
+      }
+    }
+  }
+
+  console.log('searching', SearchObj);
+
   // console.log('THE Time', );
-  const { geoValue, lat, lng, openNowCheckBox } = req.body;
+  // const { geoValue, lat, lng, openNowCheckBox, rating } = req.body;
   try {
-    if (geoValue === '50' || geoValue === '100' || openNowCheckBox) {
+    if (openNowCheckBox || rating) {
       const geoParams = req.body;
       console.log('NO GET FIRED!!');
+      const restaurants = await Restaurant.find(SearchObj);
+      console.log('resttttt', restaurants);
+      res.status(201).send(restaurants);
 
-      const radius = Number(geoParams.geoValue) / 6378;
-      const timeNow = hoursToMinutesConverter();
+      // const radius = Number(geoParams.geoValue) / 6378;
 
-      let flagged = false;
-      if (geoValue) {
-        if (openNowCheckBox) {
-          flagged = true;
-          const restaurants = await Restaurant.find({
-            location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
-            closing_time: { $gte: timeNow },
-          });
+      // if (geoValue) {
+      //   if (openNowCheckBox) {
+      //     flagged = true;
+      //     const restaurants = await Restaurant.find({
+      //       location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
+      //       closing_time: { $gte: timeNow },
+      //       rating: { $lte: rating },
+      //     });
 
-          res.status(201).send(restaurants);
-        } else {
-          const restaurants = await Restaurant.find({
-            location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
-          });
+      //     res.status(201).send(restaurants);
+      //     } else {
+      //       const restaurants = await Restaurant.find({
+      //         location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
+      //         rating: { $lte: rating },
+      //       });
+      //       res.status(201).send(restaurants);
+      //     }
+      //   } else {
+      //     if (openNowCheckBox) {
+      //       console.log('CHECKbox FIRED new!!');
 
-          res.status(201).send(restaurants);
-        }
-      } else if (openNowCheckBox) {
-        if (flagged) return;
-        else {
-          const restaurants = await Restaurant.find({
-            closing_time: { $gte: timeNow },
-          });
-
-          res.status(201).send(restaurants);
-        }
-      }
+      //       const restaurants = await Restaurant.find({
+      //         closing_time: { $gte: timeNow },
+      //         rating: { $lte: rating },
+      //       });
+      //       res.status(201).send(restaurants);
+      //     } else {
+      //       const restaurants = await Restaurant.find({
+      //         rating: { $lte: rating },
+      //       });
+      //     }
+      //   }
+    } else if (geoValue === '50' || geoValue === '100') {
+      const restaurants = await Restaurant.find(GeoObj);
+      console.log('resttttt', restaurants);
+      res.status(201).send(restaurants);
     } else {
       console.log('YES DEFAULT');
       const restaurants = await Restaurant.find({});
@@ -53,7 +92,7 @@ const getRestaurants = async (req, res) => {
       res.status(200).send(restaurants);
     }
   } catch (error) {
-    res.status(500).send({ error, message: error.message || 'Error registering user' });
+    res.status(500).send({ error, message: error.message || 'Error fetching restaurants' });
   }
 };
 
