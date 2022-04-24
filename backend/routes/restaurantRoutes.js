@@ -10,7 +10,8 @@ const {
 } = require('../controllers/restaurantControllers');
 
 //products
-router.route('/').get(getRestaurants).post(createRestaurant);
+router.post('/all',getRestaurants)
+router.post('/', createRestaurant);
 router.put('/:id', updateRestaurant);
 
 //add

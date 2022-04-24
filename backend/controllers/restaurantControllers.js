@@ -5,20 +5,34 @@ const Favorite = require('../models/FavoritesModel');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+// GETS ALL RESTAURANTS
 const getRestaurants = async (req, res) => {
+  console.log('THE BODY', req.body.geo);
+  const { geoValue, lat, lng } = req.body;
   try {
-    const restaurants = await Restaurant.find({});
+    if (lat) {
+      const geoParams = req.body;
+      console.log('NO GET FIRED!!');
 
-    res.status(200).send(restaurants);
+      const radius = Number(geoParams.geoValue) / 6378;
+
+      const restaurants = await Restaurant.find({
+        location: { $geoWithin: { $centerSphere: [[geoParams.lng, geoParams.lat], radius] } },
+      });
+      console.log('restaurants,', restaurants);
+      res.status(200).send(restaurants);
+    } else {
+      console.log('YES');
+      const restaurants = await Restaurant.find({});
+
+      res.status(200).send(restaurants);
+    }
   } catch (error) {
     res.status(500).send({ error, message: error.message || 'Error registering user' });
   }
 };
 
 const createRestaurant = async (req, res) => {
-  // const { image} = await req.body;
-  // console.log('IMAGE', image)
-  // console.log('controller',req.body)
   try {
     const restaurants = await Restaurant.create(req.body);
     res.status(201).send(restaurants);
@@ -46,33 +60,26 @@ const toggleFavorites = async (req, res) => {
   const { _id, restaurantID } = req.body;
 
   const favDocs = await Favorite.find({ userFrom: _id, restaurantID });
-  // console.log(favDocs)
 
   if (favDocs.length > 0) {
-    // console.log('YES')
-    //remove
     await Restaurant.findByIdAndUpdate({ _id: restaurantID }, { isFavorited: false });
     await Favorite.findOneAndDelete({ userFrom: _id, restaurantID }).remove();
 
     const count = await Favorite.count();
     res.status(201).send({ count, added: false, restaurantID });
-    console.log('adding', false);
   } else {
-    //  console.log('NO', req.body);
     await Favorite.create({ userFrom: _id, restaurantID });
     const count = await Favorite.count();
     await Restaurant.findByIdAndUpdate({ _id: restaurantID }, { isFavorited: true });
 
     res.status(201).send({ count, added: true, restaurantID });
-   
   }
 };
 
 const getFavorites = async (req, res) => {
   const { _id, favoriteCount } = req.body;
-  console.log('id', _id, 'fav', favoriteCount, 'body', req.body)
+  // console.log('id', _id, 'fav', favoriteCount, 'body', req.body)
   if (favoriteCount) {
-   
     const docs = await Favorite.find({ userFrom: _id });
     const count = docs.length;
 
@@ -108,14 +115,14 @@ const deleteFavoriteController = async (req, res) => {
 
       function (err, doc) {
         if (err) {
-          (err);
+          err;
         } else {
           return doc;
         }
       },
     );
 
-    ('doc delete', docs);
+    'doc delete', docs;
 
     // const populatedDocs = await User.findByIdAndUpdate(_id).populate('favorites');
 
@@ -126,7 +133,6 @@ const deleteFavoriteController = async (req, res) => {
 };
 
 const getFavoritesController = async (req, res) => {
-  ('firessdqdqdqdqdqAAAAAAAAA');
   const { _id } = req.body;
 
   try {

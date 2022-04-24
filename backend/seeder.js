@@ -24,7 +24,7 @@ const importData = async () => {
 
     const createdUsers = await User.insertMany(users);
 
-    //  console.log('fired');
+ 
     const adminUserID = createdUsers[0]._id; //admin is the first user
 
     const sampleRestaurants = restaurants.map((restaurant) => {

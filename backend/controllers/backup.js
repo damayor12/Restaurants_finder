@@ -15,9 +15,7 @@ const getRestaurants = async (req, res) => {
 };
 
 const createRestaurant = async (req, res) => {
-  // const { image} = await req.body;
-  // console.log('IMAGE', image)
-  // console.log('controller',req.body)
+
   try {
     const restaurants = await Restaurant.create(req.body);
     res.status(201).send(restaurants);
@@ -28,12 +26,12 @@ const createRestaurant = async (req, res) => {
 
 const updateRestaurant = async (req, res) => {
   const userId = req.params.id;
-  console.log('body', req.body);
+
   try {
     const updatedRestaurant = await Restaurant.findByIdAndUpdate({ _id: userId }, req.body, {
       new: true,
     });
-    console.log('updated', updatedRestaurant);
+    
 
     res.status(201).send(updatedRestaurant);
   } catch (error) {
@@ -70,7 +68,7 @@ const deleteFavoriteController = async (req, res) => {
   const { _id } = req.body;
 
   try {
-    console.log('deleteeeeeeeee');
+    // console.log('deleteeeeeeeee');
     const docs = await User.findByIdAndUpdate(
       _id,
       { $pull: { favorites: restaurandID } },
@@ -83,16 +81,14 @@ const deleteFavoriteController = async (req, res) => {
 
       function (err, doc) {
         if (err) {
-          console.log(err);
+          // console.log(err);
         } else {
           return doc;
         }
       },
     );
 
-    console.log('doc delete', docs);
-
-    // const populatedDocs = await User.findByIdAndUpdate(_id).populate('favorites');
+   
 
     res.status(201).send({ ...docs });
   } catch (error) {
@@ -103,7 +99,7 @@ const deleteFavoriteController = async (req, res) => {
 const getFavoritesController = async (req, res) => {
   const { _id } = req.body;
 
-  console.log('firessdqdqdqdqdqAAAAAAAAA');
+  // console.log('firessdqdqdqdqdqAAAAAAAAA');
   let docs;
   const populatedDocs = await User.findByIdAndUpdate(_id)
     .populate('favorites')
@@ -117,7 +113,7 @@ const getFavoritesController = async (req, res) => {
     });
   //        res.status(200).json({ success: true, comments });
   //  })
-  console.log('favvv', populatedDocs);
+  // console.log('favvv', populatedDocs);
   // res.send('yes');
   // res.status(201).send(populatedDocs);
   // } catch (error) {

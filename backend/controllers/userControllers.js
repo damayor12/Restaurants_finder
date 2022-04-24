@@ -12,7 +12,7 @@ const register = async (req, res) => {
       res.status(400);
       throw new Error('Invalid inputs');
     }
-   console.log('yes11');
+
     const userExists = await User.findOne({ email });
 
     if (userExists) {
@@ -22,7 +22,7 @@ const register = async (req, res) => {
     const salt = await bcrypt.genSalt(10);
     const Hashpassword = await bcrypt.hash(password, salt);
     const user = await User.create({ email, password: Hashpassword, name });
-    console.log('yes');
+  
     if (user) {
       res.json({
         _id: user._id,
