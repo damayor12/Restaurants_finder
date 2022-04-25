@@ -125,10 +125,38 @@ const getFavorites = async (req, res) => {
   res.status(201).send({ docs, count });
 };
 
+const createDetailsComment = async (req, res) => {
+  console.log('parasms', req.params);
+  const id = req.params.id;
+  const docs = await Restaurant.findByIdAndUpdate(
+    { _id: id },
+    { $push: { customerReviews: req.body } },
+    { safe: true, new: true },
+  );
+
+  console.log('docssss', docs);
+  res.status(201).send(docs);
+};
+
+const getDetails = async (req, res) => {
+  try {
+    const id = req.params.id;
+    console.log('the id', id);
+    const docs = await Restaurant.findById({ _id: id }).populate('customerReviews');
+
+    console.log('docssss', docs);
+    res.status(200).send(docs);
+  } catch (err) {
+    console.log(err);
+  }
+};
+
 module.exports = {
   getRestaurants,
   createRestaurant,
   updateRestaurant,
+  getDetails,
   toggleFavorites,
+  createDetailsComment,
   getFavorites,
 };

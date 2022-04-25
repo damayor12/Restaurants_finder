@@ -65,7 +65,7 @@ const RestaurantsSchema = new mongoose.Schema(
     },
     isFavorited: {
       type: Boolean,
-      default: false
+      default: false,
     },
     tags: {
       type: [String],
@@ -73,11 +73,12 @@ const RestaurantsSchema = new mongoose.Schema(
     deliverytime: {
       type: String,
     },
-    customerReviews: [
+    customerReviews: [ 
       {
         customerName: { type: String },
         customerRating: { type: Number },
         customerComment: { type: String },
+        customerCommentBody: { type: String },
         user: {
           type: mongoose.Schema.Types.ObjectId,
           required: true,

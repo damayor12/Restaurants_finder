@@ -6,6 +6,8 @@ const {
   updateRestaurant,
   toggleFavorites,
   getFavorites,
+  createDetailsComment,
+  getDetails,
   deleteFavoriteController,
 } = require('../controllers/restaurantControllers');
 
@@ -13,6 +15,8 @@ const {
 router.post('/all',getRestaurants)
 router.post('/', createRestaurant);
 router.put('/:id', updateRestaurant);
+router.post('/:id/comment', createDetailsComment);
+router.get('/:id/details', getDetails);
 
 //add
 router.route('/favorites').post(toggleFavorites);
