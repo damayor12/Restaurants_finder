@@ -19,7 +19,7 @@ const Login = ({ history }) => {
     dispatch(loginUser({ password, email })).then(()=> {
       history.push('/');
       // window.location.reload();
-      // console.log('')
+     
     })
     
   };

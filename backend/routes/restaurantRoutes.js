@@ -18,7 +18,7 @@ router.put('/:id', updateRestaurant);
 router.route('/favorites').post(toggleFavorites);
 //get
 router.post('/favorites/all', getFavorites);
-router.delete('/favorites/:id', deleteFavoriteController);
+
 
 
 module.exports = router;

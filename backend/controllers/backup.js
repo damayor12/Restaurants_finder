@@ -68,7 +68,7 @@ const deleteFavoriteController = async (req, res) => {
   const { _id } = req.body;
 
   try {
-    // console.log('deleteeeeeeeee');
+    
     const docs = await User.findByIdAndUpdate(
       _id,
       { $pull: { favorites: restaurandID } },
@@ -81,7 +81,7 @@ const deleteFavoriteController = async (req, res) => {
 
       function (err, doc) {
         if (err) {
-          // console.log(err);
+       
         } else {
           return doc;
         }
@@ -99,12 +99,12 @@ const deleteFavoriteController = async (req, res) => {
 const getFavoritesController = async (req, res) => {
   const { _id } = req.body;
 
-  // console.log('firessdqdqdqdqdqAAAAAAAAA');
+ 
   let docs;
   const populatedDocs = await User.findByIdAndUpdate(_id)
     .populate('favorites')
     .exec((err, doc) => {
-      //   //  console.log(doc)
+    
       if (err) {
         return res.status(400).send(err);
       } else {
