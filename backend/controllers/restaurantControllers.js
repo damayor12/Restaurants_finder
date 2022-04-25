@@ -8,23 +8,29 @@ const hoursToMinutesConverter = require('../utils/timeConverter');
 
 // GETS ALL RESTAURANTS
 const getRestaurants = async (req, res) => {
-  const { geoValue, lat, lng, openNowCheckBox, rating } = req.body;
+  const { geoValue, lat, lng, openNowCheckBox, rating, searchTerm } = req.body;
   const timeNow = hoursToMinutesConverter();
   const bodyObj = req.body;
   const radius = Number(geoValue) / 6378;
 
-  console.log('TESTING', [[String(bodyObj['lng']), String(bodyObj['lat'])], String(radius)]);
-
-  console.log('THE BODY', req.body);
-
   let SearchObj = {};
   let GeoObj = {};
+  let SearchTermObj = {};
   for (let i in bodyObj) {
     if (bodyObj[i] !== 0 || bodyObj[i] !== '' || !bodyObj[i]) {
       if (i === 'openNowCheckBox' && openNowCheckBox) {
         SearchObj['closing_time'] = { $gte: timeNow };
       } else if (i === 'rating') {
         SearchObj['rating'] = { $lte: rating };
+      } else if (i === 'searchTerm') {
+        SearchTermObj['$or'] = [
+          {
+            name: new RegExp(searchTerm, 'i'),
+          },
+          {
+            tags: new RegExp(searchTerm, 'i'),
+          },
+        ];
       } else if (i === 'lat' || i === 'lng') {
         GeoObj['location'] = {
           $geoWithin: {
@@ -35,15 +41,23 @@ const getRestaurants = async (req, res) => {
     }
   }
 
-  console.log('searching', SearchObj);
+  console.log('searcTerm', SearchTermObj);
+  // {
+  //   name: new RegExp(searchTerm, 'i');
+  // }
+  // {
+  //   tags: {
+  //     $in: new RegExp(searchTerm, 'i');
+  //   }
+  // }
 
   // console.log('THE Time', );
   // const { geoValue, lat, lng, openNowCheckBox, rating } = req.body;
   try {
-    if (openNowCheckBox || rating) {
+    if (openNowCheckBox || rating || searchTerm) {
       const geoParams = req.body;
       console.log('NO GET FIRED!!');
-      const restaurants = await Restaurant.find(SearchObj);
+      const restaurants = await Restaurant.find(SearchObj).find(SearchTermObj);
       console.log('resttttt', restaurants);
       res.status(201).send(restaurants);
 
