@@ -130,9 +130,9 @@ const createDetailsComment = async (req, res) => {
   const id = req.params.id;
   const docs = await Restaurant.findByIdAndUpdate(
     { _id: id },
-    { $push: { customerReviews: req.body } },
+    { $push: { customerReviews: req.body }, $inc: { totalReviews: 1 } },
     { safe: true, new: true },
-  );
+  )
 
   console.log('docssss', docs);
   res.status(201).send(docs);
