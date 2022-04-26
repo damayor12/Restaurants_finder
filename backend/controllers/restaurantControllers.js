@@ -1,5 +1,6 @@
 const asyncHandler = require('express-async-handler');
 const Restaurant = require('../models/RestaurantsModel');
+const Product = require('../models/ProductsModel');
 const User = require('../models/UsersModel');
 const Favorite = require('../models/FavoritesModel');
 const bcrypt = require('bcryptjs');
@@ -63,9 +64,34 @@ const getRestaurants = async (req, res) => {
 
 // CREATE RESTAURANT
 const createRestaurant = async (req, res) => {
+  const { restaurantObj, productsObj } = req.body;
+
+  const products = productsObj?.parsedCsvData;
+
+  console.log('restaurants', restaurantObj);
+  console.log('products', productsObj);
+
+  const writerID = restaurantObj.writer;
+  products['writer'] = {};
+
   try {
-    const restaurants = await Restaurant.create(req.body);
-    res.status(201).send(restaurants);
+    const restaurant = await Restaurant.create(restaurantObj);
+
+    if (products.length > 0) {
+      products = products.map((product) => {
+        product['writer'] = writerID;
+        product['restaurantId'] = restaurant._id;
+      });
+
+      const productDocs = await Product.insertMany(products);
+      if (productDocs) {
+        res.status(201).send(restaurant);
+      }
+    } else {
+      res.status(201).send(restaurant);
+    }
+
+    // res.status(201).send(restaurants);
   } catch (error) {
     res.status(500).send({ error, message: error.message || 'Error creating restaurant' });
   }
@@ -132,7 +158,7 @@ const createDetailsComment = async (req, res) => {
     { _id: id },
     { $push: { customerReviews: req.body }, $inc: { totalReviews: 1 } },
     { safe: true, new: true },
-  )
+  );
 
   console.log('docssss', docs);
   res.status(201).send(docs);

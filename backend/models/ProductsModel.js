@@ -1,6 +1,5 @@
 const mongoose = require('mongoose');
 
-
 const ProductsSchema = new mongoose.Schema(
   {
     name: {
@@ -9,13 +8,17 @@ const ProductsSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: true,
     },
     price: {
       type: Number,
     },
+    countInStock: {
+      type: Number,
+      default: 0,
+    },
     reviewCount: {
-      type: String,
+      type: Number,
+      default: 0,
     },
     writer: {
       ref: 'User',
@@ -28,7 +31,5 @@ const ProductsSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
-
-
 
 module.exports = mongoose.model('Products', ProductsSchema);
