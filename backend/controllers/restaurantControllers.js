@@ -44,7 +44,7 @@ const getRestaurants = async (req, res) => {
   }
 
   try {
-    if (openNowCheckBox || rating || searchTerm) {
+    if (openNowCheckBox || rating < 5 || searchTerm) {
       const restaurants = await Restaurant.find(SearchParams).find(SearchTermObj);
 
       res.status(201).send(restaurants);
@@ -68,22 +68,27 @@ const createRestaurant = async (req, res) => {
 
   const products = productsObj?.parsedCsvData;
 
-  console.log('restaurants', restaurantObj);
-  console.log('products', productsObj);
+  // console.log('restaurants', restaurantObj);
+  // console.log('products', productsObj);
 
   const writerID = restaurantObj.writer;
-  products['writer'] = {};
-
+  // console.log('fired', restaurantObj);
   try {
     const restaurant = await Restaurant.create(restaurantObj);
 
     if (products.length > 0) {
-      products = products.map((product) => {
-        product['writer'] = writerID;
-        product['restaurantId'] = restaurant._id;
-      });
+      console.log('yes');
+      // const mappedProducts = products.map((product) => {
+      //   product['writer'] = writerID;
+      //   product['restaurantId'] = restaurant._id;
+      //   return product;
+      // });
 
-      const productDocs = await Product.insertMany(products);
+      const mappedProducts = products.map((prod) => {
+        return { ...prod, writer: writerID, restaurantId: restaurant._id };
+      });
+      
+      const productDocs = await Product.insertMany(mappedProducts);
       if (productDocs) {
         res.status(201).send(restaurant);
       }
@@ -165,13 +170,15 @@ const createDetailsComment = async (req, res) => {
 };
 
 const getDetails = async (req, res) => {
+  console.log('get detai;');
   try {
     const id = req.params.id;
     console.log('the id', id);
     const docs = await Restaurant.findById({ _id: id }).populate('customerReviews');
+    const productsdoc = await Product.find({ restaurantId: id });
 
-    console.log('docssss', docs);
-    res.status(200).send(docs);
+    // console.log('docssss', { ...docs._doc, productsdoc });
+    res.status(200).send({ ...docs._doc, productsdoc });
   } catch (err) {
     console.log(err);
   }
