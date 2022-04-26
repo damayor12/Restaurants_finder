@@ -8,21 +8,18 @@ const {
   getFavorites,
   createDetailsComment,
   getDetails,
-  deleteFavoriteController,
 } = require('../controllers/restaurantControllers');
 
-//products
-router.post('/all',getRestaurants)
+//restaurants
+router.post('/all', getRestaurants);
 router.post('/', createRestaurant);
 router.put('/:id', updateRestaurant);
 router.post('/:id/comment', createDetailsComment);
 router.get('/:id/details', getDetails);
 
-//add
+//api/restaurants/favorites
 router.route('/favorites').post(toggleFavorites);
 //get
 router.post('/favorites/all', getFavorites);
-
-
 
 module.exports = router;
