@@ -1,0 +1,168 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;700&display=swap');
+@import "react-alice-carousel/lib/alice-carousel.css";
+
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="449"><path fill="#F1F5FE" fill-rule="evenodd" d="M0 0h1440v449H191.5C85.737 449 0 363.263 0 257.5V0z"/></svg>');
+  
+}
+
+
+span, label {
+  color: black !important;
+}
+
+:root {
+  --main-bg-color: brown;
+  --cyan: hsl(180, 66%, 49%);
+  --dark_violet: hsl(122, 27%, 26%);
+  ---red: hsl(0, 87%, 67%);
+  ---gray: hsl(0, 0%, 75%);
+  --grayish_violet: hsl(257, 7%, 63%);
+  --very_dark_blue: hsl(255, 11%, 22%);
+  --very_dark_violet: hsl(260, 8%, 14%);
+}
+
+/* code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+} */
+
+*,
+*::after,
+*::before {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  ;
+}
+
+.on {
+  color: #000;
+}
+.off {
+  color: #ccc;
+}
+
+.star-rating button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.header {
+  height: 10rem;
+  background: hsl(256, 69%, 39%);
+  padding: 3rem 15rem;
+  color: white;
+  align-items: center;
+
+}
+
+label {
+  color: white !important;
+}
+
+
+
+.header_first {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  /* border: red 1px solid; */
+}
+
+.dot {
+  height: 25px;
+  width: 25px;
+  background-color: rgb(214, 43, 43);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white !important;
+  transform: translateX(10px);
+}
+
+.home_container {
+  background: var(--gray);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.prod_card {
+  display: flex;
+  height: 12rem;
+  
+  border: gainsboro solid 2px;
+  margin-bottom: 1rem;
+}
+
+.prod_con {
+  /* padding: 3rem; */
+  /* width: 100%; */
+  display: flex;
+  flex-direction: column;
+}
+
+.prod_header {
+  display: flex;
+  /* justify-content: space-between; */
+}
+
+.prod_tags {
+  font-style: italic;
+}
+
+.prod_details_row > * {
+  margin-right: 1rem;
+}
+
+.prod_details_row {
+  display: flex;
+}
+
+.dropzone {
+  background: #eee;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  height: 150px;
+  width: 400px;
+  border: 2px dashed gainsboro;
+  outline: none;
+}
+
+.product:hover {
+    /* background: red !important; */
+    /* cursor: pointer; */
+    box-shadow: 0px 5px 10px 0px gainsboro;
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
+.dropzoneReject {
+  border: 2px dashed red;
+}
+
+.dropzoneAccept {
+  border: 2px dashed green;
+}
+
+.showbox {
+  display: block;
+}
+
+.hidebox {
+  display: none;
+}
+
+
+
