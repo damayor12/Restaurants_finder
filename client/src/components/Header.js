@@ -31,7 +31,6 @@ const Header = ({ history }) => {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-
     setShow((prev) => !prev);
   };
 
@@ -48,29 +47,23 @@ const Header = ({ history }) => {
               <h1>Best Restaurants</h1>
             </Link>
           </div>
-          {/* <div
-            className="ui toggle checkbox"
-            style={{ float: 'right', marginRight: '3rem', marginLeft: 'auto' }}
-          >
-            <input type="checkbox" />
-            <label className="label">Toggle</label>
-          </div> */}
+
           <div style={{ display: 'flex', marginLeft: 'auto' }}>
             <Icon
               name="cart"
               style={{ color: 'white', marginRight: '2rem', cursor: 'pointer' }}
-              // onMouseEnter={handleBoxToggle}
-              // onMouseLeave={handleBoxLeave}
               onClick={handleClick}
             />
-            {count > 0 && <div
-              className="dot"
-              style={{ position: 'absolute', marginLeft: '.7rem', fontSize: '0.8rem' }}
-            >
-              {cart.reduce(function (acc, obj) {
-                return acc + Number(obj.quantity);
-              }, 0)}
-            </div>}
+            {count > 0 && (
+              <div
+                className="dot"
+                style={{ position: 'absolute', marginLeft: '.7rem', fontSize: '0.8rem' }}
+              >
+                {cart.reduce(function (acc, obj) {
+                  return acc + Number(obj.quantity);
+                }, 0)}
+              </div>
+            )}
           </div>
 
           {loginSuccess ? (

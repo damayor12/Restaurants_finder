@@ -2,7 +2,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 
 export const getProducts = async (params = '') => {
-  // geo = JSON.stringify(geo)
+  
 
   const config = {
     headers: {
@@ -11,7 +11,6 @@ export const getProducts = async (params = '') => {
   };
 
   if (params === '') {
- 
     try {
       const { data } = await axios.post('/api/restaurants/all');
       return data;
@@ -20,13 +19,10 @@ export const getProducts = async (params = '') => {
     }
   } else {
     try {
-    
       const { data } = await axios.post('/api/restaurants/all', params, config);
       return data;
     } catch (error) {
       toast.error('failed to fetch ----');
     }
   }
-
-  
 };

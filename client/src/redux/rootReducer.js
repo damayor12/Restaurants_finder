@@ -10,9 +10,6 @@ import { restaurantsReducer } from './reducers/restaurantsReducers';
 
 import user from './reducers/userReducer';
 
-// import userReducer from './user/user.reducer';
-// import cartReducer from './cart/cart.reducer';
-// import shopReducer from './shop/shop.reducer';
 
 const persistConfig = {
   key: 'root',

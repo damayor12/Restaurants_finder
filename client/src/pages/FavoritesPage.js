@@ -28,22 +28,12 @@ const Favorites = () => {
       const { data } = await axios.post(`/api/restaurants/favorites/all`, payload, config);
 
       if (data) {
-       
         setFavorites(data.docs);
       }
-    } catch (error) {
-      
-    }
+    } catch (error) {}
   };
 
-  // useEffect(() => {
-  //   fetchFavorites();
-  // }, [favorites]);
-
-
-
   useEffect(() => {
-    
     dispatch(setFavoritesCount());
     fetchFavorites();
   }, [dispatch]);
@@ -66,13 +56,6 @@ const Favorites = () => {
 
           <Grid style={{ marginTop: '10rem' }}>
             <h1>Favorites</h1>
-            {/* <Button
-              // style={{ color: 'hsl(256, 69%, 39%)' }}
-              style={{ marginLeft: 'auto', background: 'hsl(256, 69%, 39%)', color: 'white' }}
-              onClick={() => dispatch(openModal({ modalType: 'FormModal' }))}
-            >
-              Create Restaurant
-            </Button> */}
           </Grid>
 
           {favorites && (

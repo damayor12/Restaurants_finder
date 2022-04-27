@@ -1,6 +1,6 @@
 import { Icon } from 'semantic-ui-react';
 
-const Rating = ({ rating, onClick, style, setRating, setRatingError }) => {
+const Rating = ({ rating, setRating, setRatingError }) => {
   return (
     <>
       {[...Array(5)].map((_, i) => (

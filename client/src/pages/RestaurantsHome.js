@@ -19,12 +19,6 @@ const RestaurantsHome = () => {
   const newAddPost = useSelector((state) => state.restaurants.posts);
   const newEditPost = useSelector((state) => state.restaurants.newpost);
 
-  // useEffect(() => {
-  //   if (newPost) {
-  //     setData((prev) => [...prev, newPost]);
-  //   }
-  // }, [newPost]);
-
   useEffect(() => {
     if (
       geoFilterCoords !== '' ||
@@ -70,7 +64,6 @@ const RestaurantsHome = () => {
           return post;
         }
       });
-      // .filter((data) => data.category !== 'drinks');
 
       setData(newdata);
     }
@@ -96,7 +89,6 @@ const RestaurantsHome = () => {
         <Grid style={{ marginTop: '10rem' }}>
           <h1>Available Restaurants</h1>
           <Button
-            // style={{ color: 'hsl(256, 69%, 39%)' }}
             style={{ marginLeft: 'auto', background: 'hsl(256, 69%, 39%)', color: 'white' }}
             onClick={() => dispatch(openModal({ modalType: 'FormModal' }))}
           >
@@ -113,7 +105,15 @@ const RestaurantsHome = () => {
         )}
 
         {data.length === 0 && (
-          <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginTop: '10rem', color: 'grey' }}>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              marginTop: '10rem',
+              color: 'grey',
+            }}
+          >
             <h2>No Restaurants found :/</h2>
           </div>
         )}

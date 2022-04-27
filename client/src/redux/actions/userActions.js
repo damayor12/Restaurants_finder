@@ -15,17 +15,12 @@ export const registerUser = (passed_data) => async (dispatch, getState) => {
       type: REGISTER_USER,
       payload: data,
     });
-
-    
-    
   } catch (error) {
     // toast.error(error.message);
   }
 };
 
 export const loginUser = (passed_data) => async (dispatch, getState) => {
-  
-
   const config = {
     headers: {
       'Content-Type': 'application/json',
@@ -34,10 +29,7 @@ export const loginUser = (passed_data) => async (dispatch, getState) => {
   try {
     const { data } = await axios.post('api/users/login', passed_data, config);
 
-
-
     if (data) {
-      
       dispatch({
         type: LOGIN_USER,
         payload: data,
@@ -45,13 +37,10 @@ export const loginUser = (passed_data) => async (dispatch, getState) => {
       toast.success('Log in successful');
       localStorage.setItem('userInfo', JSON.stringify(data));
       return Promise.resolve();
-      
     } else {
       throw new Error('Something wrong');
     }
-    
   } catch (error) {
-    
     toast.error(error.message || error.response.data.message);
     return Promise.reject();
   }

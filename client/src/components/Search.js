@@ -25,7 +25,7 @@ const Search = ({
   setSearchTerm,
   openNowCheckBox,
   setRating,
-  rating
+  rating,
 }) => {
   const favState = useSelector((state) => state.restaurants.favoriteList);
   const count = favState.favoriteCount;
@@ -58,21 +58,13 @@ const Search = ({
     setLoading(false);
   };
 
- 
   const handleChange = (e) => {
-    
-  
-
     setCheckboxValue(e.target.value);
   };
 
   const handleCheckBoxChange = (e) => {
-    
-    
-
     setOpenNowCheckBox((prev) => !prev);
   };
-
 
   return (
     <>
@@ -227,15 +219,7 @@ const Search = ({
         <Menu fluid widths={3} style={{ marginTop: '3rem' }} pointing>
           <Menu.Item name="Foods" as={NavLink} to="/" />
           <Menu.Item name="Drinks" as={NavLink} to="/drinks" />
-          <Menu.Item
-            name="Favorites"
-            as={NavLink}
-            to="/favorites"
-            // activeStyle={({ isActive }) => ({
-            //   color: isActive ? '#fff !important' : '#545e6f !important',
-            //   background: isActive ? '#7600dc!important' : '#f0f0f0 !important',
-            // })}
-          >
+          <Menu.Item name="Favorites" as={NavLink} to="/favorites">
             Favorites
             <Notification />
           </Menu.Item>

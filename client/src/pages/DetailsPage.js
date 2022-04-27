@@ -34,26 +34,14 @@ const DetailsPage = ({ match }) => {
     />,
   ];
 
-  // const fetchData = () => {
-  //   try {
-  //     const { data } = axios.get(`api/restaurants/${match.params.id}/details`);
-  //     return data;
-  //   } catch (error) {}
-  // };
-
   useEffect(() => {
     dispatch(getDetails(match.params.id));
   }, [dispatch, match]);
-  
 
   return (
     <Container>
       <Grid style={{ paddingTop: '2rem' }}>
         <Grid.Column width={8}>
-          {/* {Name} */}
-          {/* {Reviews Total and Stars} */}
-          {/* {BACKDROP } */}
-
           <Segment attached="top">
             <Header
               as="h2"
@@ -111,9 +99,6 @@ const DetailsPage = ({ match }) => {
               <ReviewComponent data={detail} key={ind} />
             ))}
           </Grid>
-          {/* {Name} */}
-          {/* {Reviews Total and Stars} */}
-          {/* {BACKDROP } */}
         </Grid.Column>
       </Grid>
       <h1>Products</h1>

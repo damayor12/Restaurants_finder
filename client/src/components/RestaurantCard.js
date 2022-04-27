@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Button, Card, Grid, Icon, Image } from 'semantic-ui-react';
 import { openModal } from '../redux/actions/modalActions';
-import {Link, NavLink} from 'react-router-dom'
+import { Link, NavLink } from 'react-router-dom';
 import {
   addToFavorites,
   decreaseFavoritesCount,
@@ -13,9 +13,6 @@ import {
 import axios from 'axios';
 import { hoursToMinutesConverter } from '../utils/timeConverter';
 const RestaurantCard = ({ data, setData, favPageFlag }) => {
-  // const favState = useSelector((state) => state.restaurants.favoriteList);
-  // const favorites = favState.favorites;
-
   const dispatch = useDispatch();
 
   const toggleFavorite = async () => {
@@ -33,7 +30,6 @@ const RestaurantCard = ({ data, setData, favPageFlag }) => {
     const newFavorites = await axios.post(`api/restaurants/favorites`, payload, config);
     if (newFavorites.status === 201) {
       if (newFavorites.data.added) {
-        // setcolorBool(true);
         dispatch(increaseFavoritesCount());
         setData((prev) =>
           prev.map((prev_data) => {
@@ -45,8 +41,6 @@ const RestaurantCard = ({ data, setData, favPageFlag }) => {
             }
           }),
         );
-
-        // data.isFavorited = true
       } else {
         dispatch(decreaseFavoritesCount());
         setData((prev) =>
@@ -59,10 +53,6 @@ const RestaurantCard = ({ data, setData, favPageFlag }) => {
             }
           }),
         );
-
-        // setcolorBool(false);
-
-        //  data.isFavorited = false
       }
     }
   };
@@ -75,12 +65,12 @@ const RestaurantCard = ({ data, setData, favPageFlag }) => {
           src={data.image}
           // size= 'big'
           fluid
-          style={{ height: '10rem'}}
+          style={{ height: '10rem' }}
         />
       </Grid.Column>
       <Grid.Column width={12} className="prod_con">
         <div className="prod_header">
-          <NavLink style={{ marginRight: '.5rem', color:'black' }} to={`/restaurants/${data._id}`}>
+          <NavLink style={{ marginRight: '.5rem', color: 'black' }} to={`/restaurants/${data._id}`}>
             <h2>{data.name}</h2>
           </NavLink>
           <div style={{ height: '2rem' }}>

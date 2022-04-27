@@ -12,16 +12,12 @@ const Login = ({ history }) => {
   const [login, SetLogin] = useState('');
   const [email, setEmail] = useState('');
 
-
-
-  const submitHandler =  (e) => {
+  const submitHandler = (e) => {
     e.preventDefault();
-    dispatch(loginUser({ password, email })).then(()=> {
+    dispatch(loginUser({ password, email })).then(() => {
       history.push('/');
       // window.location.reload();
-
-    })
-    
+    });
   };
 
   return (
@@ -54,6 +50,5 @@ const Login = ({ history }) => {
     </div>
   );
 };
-
 
 export default Login;

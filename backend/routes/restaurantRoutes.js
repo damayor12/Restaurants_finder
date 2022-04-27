@@ -10,7 +10,7 @@ const {
   getDetails,
 } = require('../controllers/restaurantControllers');
 
-//restaurants
+//api/restaurants
 router.post('/all', getRestaurants);
 router.post('/', createRestaurant);
 router.put('/:id', updateRestaurant);
@@ -19,7 +19,7 @@ router.get('/:id/details', getDetails);
 
 //api/restaurants/favorites
 router.route('/favorites').post(toggleFavorites);
-//get
+
 router.post('/favorites/all', getFavorites);
 
 module.exports = router;

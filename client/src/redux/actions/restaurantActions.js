@@ -21,7 +21,7 @@ export const createPost = (payload) => {
 };
 
 export const editPost = (payload) => {
-return {
+  return {
     type: EDIT_AFTER_SUBMIT,
     payload,
   };
@@ -59,12 +59,9 @@ export const addToFavorites = (restaurant_data) => async (dispatch, getState) =>
     }
 
     toast.success('favorited!');
-  } catch (error) {
-   
-  }
+  } catch (error) {}
 };
 
-// const request = axios.get(`api/restaurants/favorites`).then((response) => response.data);
 export const removeFromFavorites = (restaurant_data) => async (dispatch, getState) => {
   const config = {
     headers: {

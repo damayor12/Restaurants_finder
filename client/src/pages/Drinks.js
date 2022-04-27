@@ -24,7 +24,6 @@ const Drinks = () => {
   //   dispatch(setFavoritesCount());
   // }, []);
 
-
   useEffect(() => {
     if (
       geoFilterCoords !== '' ||
@@ -56,11 +55,6 @@ const Drinks = () => {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, checkboxValue, openNowCheckBox, rating, searchTerm]);
-  // useEffect(() => {
-  //   if (newAddPost.category === 'drinks') {
-  //     setDrinksData((prev) => [...prev, newAddPost]);
-  //   }
-  // }, [dispatch, newAddPost]);
 
   useEffect(() => {
     if (newAddPost.name && newAddPost.category === 'drinks') {
@@ -99,7 +93,6 @@ const Drinks = () => {
         <Grid style={{ marginTop: '10rem' }}>
           <h1>Drinks Home</h1>
           <Button
-            // style={{ color: 'hsl(256, 69%, 39%)' }}
             style={{ marginLeft: 'auto', background: 'hsl(256, 69%, 39%)', color: 'white' }}
             onClick={() => dispatch(openModal({ modalType: 'FormModal' }))}
           >

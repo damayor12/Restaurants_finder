@@ -74,7 +74,6 @@ const FormModal = ({ modalProps }) => {
     Papa.parse(file, {
       header: true,
       complete: (results) => {
-      
         setParsedCsvData(results.data);
       },
     });
@@ -82,7 +81,6 @@ const FormModal = ({ modalProps }) => {
 
   const onDrop = useCallback((acceptedFiles) => {
     if (acceptedFiles.length) {
-     
       setCsvName(acceptedFiles[0].name);
       parseFile(acceptedFiles[0]);
     }
@@ -97,7 +95,6 @@ const FormModal = ({ modalProps }) => {
     defaultValues,
   });
 
-  
   const onSubmit = async (passed_data) => {
     setLoading(true);
 
@@ -145,8 +142,6 @@ const FormModal = ({ modalProps }) => {
 
         profilePicUrl = await upload(passed_data.image[0]);
 
- 
-
         const { data } = await axios.post(
           `api/restaurants`,
 
@@ -170,18 +165,14 @@ const FormModal = ({ modalProps }) => {
         );
 
         if (data) dispatch(createPost(data));
-       
-        
       }
 
       reset();
       setLoading(false);
-      
+
       toast.success('sucessfully created');
       dispatch(closeModal());
-      
     } catch (error) {
-     
       toast.error(error.message);
     }
   };
@@ -189,7 +180,6 @@ const FormModal = ({ modalProps }) => {
   // useEffect(() => {}, [tagList, bool]);
 
   const keypressHandler = (e) => {
-    
     if (e.code === 'Space') {
       if (e.target.value.split(',').length < 3) {
         setError(true);
@@ -200,10 +190,8 @@ const FormModal = ({ modalProps }) => {
         setTagList(e.target.value.split(','));
       }
     }
-    
   };
 
-  // const tagRegister = register('tags', { required: true });
   return (
     <ModalWrapper header={modalProps ? 'Edit the restaurant' : 'Create a restaurant'}>
       <Modal.Content image scrolling>
@@ -298,17 +286,10 @@ const FormModal = ({ modalProps }) => {
                 type="text"
                 name="tags"
                 placeholder="Enter tag, click enter"
-                // {...tagRegister}
-
                 ref={register({
                   required: true,
                 })}
-                // ref={tagRegister.ref}
-                // register={register({ required: true })}
-
-                // onKeyPress={}
                 onKeyPress={(e) => {
-                  // tagRegister.onKeyDown(e);
                   keypressHandler(e);
                 }}
               />
@@ -336,18 +317,6 @@ const FormModal = ({ modalProps }) => {
                 ))}
             </div>
 
-            {/* <Form.Field>
-              <h3>File</h3>
-              <input
-                type="file"
-                name="csv"
-                placeholder="Enter csv file"
-                ref={register({
-                  required: false,
-                })}
-              />
-              <p style={{ color: 'red' }}>{errors.csv && 'Upload csv file'}</p>
-            </Form.Field> */}
             <Form.Field>
               <h3>Your Drinks or Foods</h3>
               <div
@@ -379,11 +348,7 @@ const FormModal = ({ modalProps }) => {
           </Form>
         </Modal.Description>
       </Modal.Content>
-      <Modal.Actions>
-        {/* <Button primary>
-          Proceed <Icon name="chevron right" />
-        </Button> */}
-      </Modal.Actions>
+      <Modal.Actions></Modal.Actions>
     </ModalWrapper>
   );
 };

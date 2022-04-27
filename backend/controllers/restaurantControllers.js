@@ -7,9 +7,11 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const hoursToMinutesConverter = require('../utils/timeConverter');
 
-// GETS ALL RESTAURANTS
+// @desc GETS ALL RESTAURANTS ,
+// @route POST /api/restaurants/all
+// @access Public
 const getRestaurants = async (req, res) => {
-  const { geoValue, lat, lng, openNowCheckBox, rating, searchTerm } = req.body;
+  const { geoValue, openNowCheckBox, rating, searchTerm } = req.body;
 
   const timeNow = hoursToMinutesConverter();
   const bodyObj = req.body;
@@ -62,26 +64,25 @@ const getRestaurants = async (req, res) => {
   }
 };
 
-// CREATE RESTAURANT
+
+// @desc CREATES RESTAURANT ,
+// @route POST /api/restaurants
+// @access Public
 const createRestaurant = async (req, res) => {
   const { restaurantObj, productsObj } = req.body;
 
   const products = productsObj?.parsedCsvData;
 
-
-
   const writerID = restaurantObj.writer;
-  
+
   try {
     const restaurant = await Restaurant.create(restaurantObj);
 
     if (products.length > 0) {
-    
-
       const mappedProducts = products.map((prod) => {
         return { ...prod, writer: writerID, restaurantId: restaurant._id };
       });
-      
+
       const productDocs = await Product.insertMany(mappedProducts);
       if (productDocs) {
         res.status(201).send(restaurant);
@@ -96,7 +97,9 @@ const createRestaurant = async (req, res) => {
   }
 };
 
-// EDIT RESTAURANT
+// @desc EDIT A RESTAURANT ,
+// @route PUT /api/restaurants/:id
+// @access Public
 const updateRestaurant = async (req, res) => {
   const userId = req.params.id;
 
@@ -111,7 +114,46 @@ const updateRestaurant = async (req, res) => {
   }
 };
 
-// TOGGLE RESTAURANT
+
+// @desc CREATE A COMMENT,
+// @route POST /api/restaurants/:id/comment
+// @access Public
+const createDetailsComment = async (req, res) => {
+  const id = req.params.id;
+  const docs = await Restaurant.findByIdAndUpdate(
+    { _id: id },
+    { $push: { customerReviews: req.body }, $inc: { totalReviews: 1 } },
+    { safe: true, new: true },
+  );
+
+  res.status(201).send(docs);
+};
+
+// @desc CREATE A COMMENT,
+// @route GET /api/restaurants/:id/details
+// @access Public
+const getFavorites = async (req, res) => {
+  const { _id, favoriteCount } = req.body;
+
+  if (favoriteCount) {
+    const docs = await Favorite.find({ userFrom: _id });
+    const count = docs.length;
+
+    res.status(201).send({ docs, count });
+    return;
+  }
+
+  const docs = await Favorite.find({ userFrom: _id }).populate('restaurantID');
+  const count = docs.length;
+
+  res.status(201).send({ docs, count });
+};
+
+
+
+// @desc TOGGLE FAVORITES,
+// @route POST /api/restaurants/favorites
+// @access Public
 const toggleFavorites = async (req, res) => {
   const { _id, restaurantID } = req.body;
 
@@ -132,49 +174,20 @@ const toggleFavorites = async (req, res) => {
   }
 };
 
-// FETCH FAVORITES
-const getFavorites = async (req, res) => {
-  const { _id, favoriteCount } = req.body;
 
-  if (favoriteCount) {
-    const docs = await Favorite.find({ userFrom: _id });
-    const count = docs.length;
 
-    res.status(201).send({ docs, count });
-    return;
-  }
-
-  const docs = await Favorite.find({ userFrom: _id }).populate('restaurantID');
-  const count = docs.length;
-
-  res.status(201).send({ docs, count });
-};
-
-const createDetailsComment = async (req, res) => {
-  
-  const id = req.params.id;
-  const docs = await Restaurant.findByIdAndUpdate(
-    { _id: id },
-    { $push: { customerReviews: req.body }, $inc: { totalReviews: 1 } },
-    { safe: true, new: true },
-  );
-
-  res.status(201).send(docs);
-};
-
+// @desc GET ALL FAVORITED RESTAURANTS AND PRODUCTS,
+// @route POST /api/restaurants/favorites/all
+// @access Public
 const getDetails = async (req, res) => {
-  
   try {
     const id = req.params.id;
 
     const docs = await Restaurant.findById({ _id: id }).populate('customerReviews');
     const productsdoc = await Product.find({ restaurantId: id });
 
-   
     res.status(200).send({ ...docs._doc, productsdoc });
-  } catch (err) {
-  
-  }
+  } catch (err) {}
 };
 
 module.exports = {

@@ -37,11 +37,9 @@ const ReviewsModal = ({ modalProps, match }) => {
     defaultValues,
   });
 
- 
- 
   const onSubmit = (params) => {
     setLoading(true);
-    
+
     if (rating === 0) {
       setRatingError(true);
       setLoading(false);
@@ -53,28 +51,17 @@ const ReviewsModal = ({ modalProps, match }) => {
       customerComment: params.summary,
       customerCommentBody: params.body,
       RestaurantId: modalProps,
-      user: JSON.parse(localStorage.getItem('userInfo'))._id
+      user: JSON.parse(localStorage.getItem('userInfo'))._id,
     };
 
     dispatch(createComment(payload));
     reset();
     setLoading(false);
-    
+
     toast.success('Review sent');
     dispatch(closeModal());
   };
-  // dispatch(createComment(payload))
-  //   "customerName": "nice guy",
-  // "customerRating": 5,
-  // "customerComment": "worstever",
-  // "customerCommentBody": "cant understand why",
-  const handleKeyDown = (e) => {
-   
 
-    // errors = {}
-  };
-
-  // const tagRegister = register('tags', { required: true });
   return (
     <ModalWrapper header="Create a Review">
       <Modal.Content image scrolling>
@@ -110,7 +97,6 @@ const ReviewsModal = ({ modalProps, match }) => {
                 name="summary"
                 placeholder="Summary of your experience"
                 ref={register({ required: true })}
-                onKeyDown={handleKeyDown}
               />
               <p style={{ color: 'red' }}>{errors.summary && 'Name is required.'}</p>
             </Form.Field>
