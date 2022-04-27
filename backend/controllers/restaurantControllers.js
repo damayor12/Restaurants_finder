@@ -68,21 +68,15 @@ const createRestaurant = async (req, res) => {
 
   const products = productsObj?.parsedCsvData;
 
-  // console.log('restaurants', restaurantObj);
-  // console.log('products', productsObj);
+
 
   const writerID = restaurantObj.writer;
-  // console.log('fired', restaurantObj);
+  
   try {
     const restaurant = await Restaurant.create(restaurantObj);
 
     if (products.length > 0) {
-      console.log('yes');
-      // const mappedProducts = products.map((product) => {
-      //   product['writer'] = writerID;
-      //   product['restaurantId'] = restaurant._id;
-      //   return product;
-      // });
+    
 
       const mappedProducts = products.map((prod) => {
         return { ...prod, writer: writerID, restaurantId: restaurant._id };
@@ -157,7 +151,7 @@ const getFavorites = async (req, res) => {
 };
 
 const createDetailsComment = async (req, res) => {
-  console.log('parasms', req.params);
+  
   const id = req.params.id;
   const docs = await Restaurant.findByIdAndUpdate(
     { _id: id },
@@ -165,22 +159,21 @@ const createDetailsComment = async (req, res) => {
     { safe: true, new: true },
   );
 
-  console.log('docssss', docs);
   res.status(201).send(docs);
 };
 
 const getDetails = async (req, res) => {
-  console.log('get detai;');
+  
   try {
     const id = req.params.id;
-    console.log('the id', id);
+
     const docs = await Restaurant.findById({ _id: id }).populate('customerReviews');
     const productsdoc = await Product.find({ restaurantId: id });
 
-    // console.log('docssss', { ...docs._doc, productsdoc });
+   
     res.status(200).send({ ...docs._doc, productsdoc });
   } catch (err) {
-    console.log(err);
+  
   }
 };
 

@@ -12,7 +12,7 @@ const connectDB = async () => {
 
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.inverse);
   } catch (error) {
-    console.log(`${error}`.red.bold);
+    
     process.exit();
   }
 };

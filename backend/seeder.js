@@ -38,10 +38,10 @@ const importData = async () => {
     });
     await Products.insertMany(sampleProducts);
     
-    console.log('Data imported'.blue.inverse);
+    
     process.exit();
   } catch (err) {
-    console.error(`${err}`.bgRed.inverse);
+   
   }
 };
 
@@ -50,10 +50,10 @@ const destroyData = async () => {
     await Restaurants.deleteMany();
     await User.deleteMany();
 
-    console.log('Data destroyed'.red.inverse);
+    
     process.exit();
   } catch (err) {
-    console.error(`${err}`.bgRed.inverse);
+  
     process.exit(1);
   }
 };

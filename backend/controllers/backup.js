@@ -50,7 +50,7 @@ const addFavoriteController = async (req, res) => {
 
       function (err, doc) {
         if (err) {
-          console.log(err);
+     
         } else {
           return doc;
         }
@@ -111,15 +111,7 @@ const getFavoritesController = async (req, res) => {
         res.status(200).send(doc);
       }
     });
-  //        res.status(200).json({ success: true, comments });
-  //  })
-  // console.log('favvv', populatedDocs);
-  // res.send('yes');
-  // res.status(201).send(populatedDocs);
-  // } catch (error) {
-  //   console.log('ERRORRRR');
-  //   res.status(500).send({ error, message: error.message || 'Error fetching favorites' });
-  // }
+  
 };
 
 module.exports = {
