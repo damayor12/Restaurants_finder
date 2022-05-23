@@ -8,7 +8,9 @@
     "server": "nodemon backend/server",
     "client": "npm start --prefix frontend",
     "data:import": "node backend/seeder",
-    "data:destroy": "node backend/seeder -d"
+    "data:destroy": "node backend/seeder -d",
+    "env:decrypt": "bash env-decrypt.sh",
+    "env:encrypt": "bash env-encrypt.sh"
   },
   "author": "Busayo Obembe",
   "license": "MIT",
@@ -29,6 +31,7 @@
   },
   "devDependencies": {
     "concurrently": "^5.3.0",
-    "nodemon": "^2.0.4"
+    "nodemon": "^2.0.4",
+    "senv": "^1.0.2"
   }
 }
