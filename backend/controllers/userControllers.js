@@ -39,10 +39,14 @@ const register = async (req, res) => {
 
 // POST api/users/login
 const login = async (req, res) => {
+
   try {
     const { email, password } = req.body;
 
+    
+
     const userExists = await User.findOne({ email });
+    console.log('fired', userExists);
 
     if (userExists) {
       bcrypt.compare(password, userExists.password);

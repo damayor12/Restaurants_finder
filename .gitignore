@@ -7,7 +7,7 @@ node_modules
 .pnp.js
 
 .env
-.env.pass
+
 # testing
 /coverage
 

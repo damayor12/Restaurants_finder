@@ -22,10 +22,11 @@ const DetailsPage = ({ match }) => {
   //   dispatch(getDetails(match.params.id));
   // });
 
-  useEffect(() => {});
+console.log('match', match
+)
 
   useEffect(() => {
-    console.log('herefvfvfvfvveveveveeeveeee');
+    
     dispatch(getDetails(match.params.id));
   }, [dispatch, match]);
 
@@ -53,7 +54,7 @@ const DetailsPage = ({ match }) => {
 
   return (
     <Container>
-      <>
+      { Object.keys(detailsData).length > 0 && <>
         <Grid style={{ paddingTop: '2rem' }}>
           <Grid.Column width={8}>
             <Segment attached="top">
@@ -105,7 +106,7 @@ const DetailsPage = ({ match }) => {
             )}
             <Grid style={{ overflow: 'auto', maxHeight: 500, marginTop: '1rem' }}>
               <Segment style={{ margin: 0, width: '100%', borderBottom: '2px solid black' }}>
-                {detailsData.customerReviews.length === 0
+                {detailsData?.customerReviews?.length === 0
                   ? 'No Reviews yet :('
                   : `${detailsData.customerReviews.length} total reviews`}
               </Segment>
@@ -123,7 +124,7 @@ const DetailsPage = ({ match }) => {
         {detailsData.productsdoc.length < 1 && (
           <p>Restaurant owner has not yet uploaded any products. Try again in a while</p>
         )}
-      </>
+      </>}
     </Container>
   );
 };

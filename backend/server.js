@@ -7,10 +7,11 @@ const colors = require('colors');
 
 
 
+
 require('dotenv').config({ path: __dirname + '/../.env.development' });
 
 connectDB();
-const app = express();
+const app = express()
 
 app.use(morgan('tiny'));
 
