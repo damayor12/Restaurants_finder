@@ -33,6 +33,8 @@ export const createComment = (RestaurantObj) => async (dispatch, getState) => {
 };
 
 export const getDetails = (RestaurantId) => async (dispatch, getState) => {
+
+  console.log('was fired', RestaurantId)
   try {
     const { data } = await axios.get(`/api/restaurants/${RestaurantId}/details`);
 

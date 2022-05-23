@@ -37,7 +37,7 @@ const importData = async () => {
       return { ...restaurant, writer: adminUserID, restaurantId: createdRestaurants[0]._id };
     });
     await Products.insertMany(sampleProducts);
-    
+    console.log('Imported'.green.inverse)
     
     process.exit();
   } catch (err) {
@@ -50,7 +50,7 @@ const destroyData = async () => {
     await Restaurants.deleteMany();
     await User.deleteMany();
 
-    
+     console.log('Deleted'.red.inverse);
     process.exit();
   } catch (err) {
   
@@ -59,6 +59,7 @@ const destroyData = async () => {
 };
 
 if (process.argv[2] === '-d') {
+
   destroyData();
 } else {
   importData();
