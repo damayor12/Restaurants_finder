@@ -1,12 +1,13 @@
 const express = require('express');
 const connectDB = require('./config/config');
 const cors = require('cors');
+const path = require('path')
 const morgan = require('morgan');
 const colors = require('colors');
 
 
 
-require('dotenv').config();
+require('dotenv').config({ path: __dirname + '/../.env.development' });
 
 connectDB();
 const app = express();
